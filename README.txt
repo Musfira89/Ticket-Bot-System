@@ -5,9 +5,9 @@ Each ticket is handled in its **own private room** between the user, the bot, an
 
 ## Key Features  
 - **Ticket Categories:**  
-  - 1️ General Help  
-  - 2️ Purchase Issues  
-  - 3️ Other  
+  - 1 General Help  
+  - 2 Purchase Issues  
+  - 3 Other  
 
 - **Room Creation:**  
   - Each ticket is created in a private room.  
