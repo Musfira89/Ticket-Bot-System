@@ -3,7 +3,6 @@ from maubot.handlers import command
 from mautrix.types import RoomCreatePreset
 import asyncio
 
-# Closed tickets auto delete after 10 minutes (testing) → set to 14*24*60*60 for production
 AUTO_DELETE_SECONDS = 10 * 60
 
 CATEGORY_MAP = {
@@ -12,16 +11,15 @@ CATEGORY_MAP = {
     "3": "other"
 }
 
-# Fixed admin account that should receive every ticket invite
+# Fixed admin account 
 ADMIN_USER = "@admin:j5.chat"
 
 
 class Ticket(Plugin):
-    tickets = {}  # user_id -> room_id cache
+    tickets = {}  
 
     async def start(self) -> None:
         """On plugin startup, ensure DB table exists and load tickets into memory."""
-        # create table if missing and load rows into memory
         self.database.execute(
             "CREATE TABLE IF NOT EXISTS tickets (user_id TEXT PRIMARY KEY, room_id TEXT NOT NULL)"
         )
@@ -38,7 +36,6 @@ class Ticket(Plugin):
     ) -> None:
         user = evt.sender
 
-        # No subcommand -> show categories
         if not subcommand:
             await evt.reply(
                 "📋 Please choose a category:\n"
@@ -49,15 +46,12 @@ class Ticket(Plugin):
             )
             return
 
-        # -------------------------------------------------------------
-        # OPEN: create ticket room and invite user + admin
-        # -------------------------------------------------------------
+      
         if subcommand == "open":
             if user in self.tickets:
                 await evt.reply(f"⚠️ You already have an open ticket: {self.tickets[user]}")
                 return
 
-            # support numeric category (1/2/3) or text
             if category in CATEGORY_MAP:
                 category = CATEGORY_MAP[category]
 
@@ -91,7 +85,7 @@ class Ticket(Plugin):
                await evt.reply("❌ Failed to create ticket room. Please contact an admin.")
                return
             
-            # ✅ Step A2: set a topic/description right after creation
+            #  Step A2: set a topic/description right after creation
             try:
                 await self.client.set_room_topic(
                    room_id,
@@ -101,7 +95,7 @@ class Ticket(Plugin):
                 self.log.warning(f"Failed to set topic for {room_id}: {e}")
 
 
-            # Step B: invite (manually) — correct signature is invite_user(room_id, user_id)
+            # Step B: invite (manually) 
             for who in invite_list:
                 try:
                     await self.client.invite_user(room_id, who)
@@ -216,9 +210,7 @@ class Ticket(Plugin):
         except Exception as e:
             self.log.warning(f"Failed to delete ticket DB row for {user}: {e}")
 
-    # -------------------------------------------------------------
-    # Invite handling (bot behavior when invited)
-    # -------------------------------------------------------------
+ 
     async def on_invite(self, room, event):
         """
         Keep logic simple: accept invite only when it's the fixed admin joining,
