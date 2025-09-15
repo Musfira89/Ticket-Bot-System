@@ -1,4 +1,12 @@
 # Ticket Bot  
+## Installation
+
+1. Clone this repository:
+   git clone https://github.com/Musfira89/Ticket-Bot-System.git
+   cd Ticket-Bot-System
+   pip install Maubot
+   mbc build
+
 ## Overview  
 A simple Matrix support ticketing system powered by Maubot.  
 Each ticket is handled in its **own private room** between the user, the bot, and the fixed admin account.  

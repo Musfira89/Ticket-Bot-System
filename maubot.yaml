@@ -1,8 +1,8 @@
 maubot: 0.1.0
-id: xyz.maubot.J5TicketBot
+id: xyz.maubot.TicketBot
 version: 1.0.0
 license: AGPL-3.0-or-later
 modules:
-- J5TicketBot
+- TicketBot
 main_class: Ticket
 database: true
